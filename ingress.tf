@@ -1,11 +1,3 @@
-data "azurerm_kubernetes_cluster" "main_aks" {
-  name                = local.aks_name
-  resource_group_name = local.rg_name
-  depends_on = [
-    azurerm_kubernetes_cluster.main_aks
-  ]
-}
-
 resource "azurerm_public_ip" "ingress_nginx_pip" {
   name                = "ingress-nginx-pip"
   location            = azurerm_resource_group.rg_tf.location
@@ -16,11 +8,6 @@ resource "azurerm_public_ip" "ingress_nginx_pip" {
   tags = {
     environment = local.environment
   }
-}
-
-data "azurerm_public_ip" "ingress_nginx_pip" {
-  resource_group_name = local.rg_name
-  name                = azurerm_public_ip.ingress_nginx_pip.name
 }
 
 resource "helm_release" "ingress_nginx" {

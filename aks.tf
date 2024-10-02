@@ -75,6 +75,20 @@ resource "azurerm_kubernetes_cluster_node_pool" "main" {
   }
 }
 
+resource "azurerm_container_registry" "main_acr" {
+  name                = local.acr_name
+  resource_group_name = azurerm_resource_group.rg_tf.name
+  location            = azurerm_resource_group.rg_tf.location
+  sku                 = "Standard"
+}
+
+resource "azurerm_role_assignment" "acr_role" {
+  principal_id                     = azurerm_kubernetes_cluster.main_aks.kubelet_identity[0].object_id
+  role_definition_name             = "AcrPull"
+  scope                            = azurerm_container_registry.main_acr.id
+  skip_service_principal_aad_check = true
+}
+
 resource "null_resource" "kubectl" {
   provisioner "local-exec" {
     command = "az aks get-credentials --resource-group ${local.rg_name} --name ${local.aks_name} --overwrite-existing"

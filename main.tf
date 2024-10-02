@@ -4,6 +4,7 @@ locals {
   environment        = "development"
   vnet_name          = "aks-vnet"
   aks_name           = "main-aks"
+  acr_name           = "laacr"
   nginx_ingress_name = "ingress-nginx"
   cert_manager_name  = "cert-manager"
   dns_name           = "test.com"

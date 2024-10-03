@@ -23,6 +23,9 @@ resource "azurerm_kubernetes_cluster" "main_aks" {
     node_labels = {
       role = "main"
     }
+
+    only_critical_addons_enabled = true     ## By default, AKS prevents app pods on default_node_pool but it is still possible. Hence this field is required to enforce app pods not getting into default_node_pool
+    temporary_name_for_rotation="tempnodes" ## This is required for any future changes to default_node_pool
   }
 
   identity {
